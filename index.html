@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Active Tremor Compensation Spoon (ATCS)</title>
+    <!-- Use Google Fonts (Open Sans & Roboto) for a clean, modern look -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            /* Medical-Tech Theme Colors */
+            --primary-color: #0056b3;
+            /* deep medical blue */
+            --secondary-color: #e6f7ff;
+            /* light clinical blue */
+            --accent-color: #007bff;
+            /* brighter blue for active states */
+            --text-dark: #333333;
+            --text-light: #666666;
+            --white: #ffffff;
+            --bg-light: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --section-padding: 80px 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background-color: var(--white);
+            scroll-behavior: smooth;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Roboto', sans-serif;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            padding: 15px 0;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        #hero {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--white) 100%);
+            padding: 120px 20px;
+            text-align: center;
+        }
+
+        #hero h1 {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        #hero h2 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        #hero .tagline {
+            font-style: italic;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Overview Section */
+        #overview {
+            padding: var(--section-padding);
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .overview-text ul {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .overview-text li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .overview-text li::before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .placeholder-image {
+            background-color: #ddd;
+            width: 100%;
+            height: 300px;
+            /* Placeholder height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius);
+            color: #666;
+            font-weight: bold;
+        }
+
+        /* Features Section */
+        #features {
+            padding: var(--section-padding);
+            background-color: var(--bg-light);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--primary-color);
+            margin: 10px auto 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        /* Methodology */
+        #methodology {
+            padding: var(--section-padding);
+        }
+
+        .methodology-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .step {
+            flex: 1;
+            padding: 20px;
+            position: relative;
+            min-width: 150px;
+        }
+
+        .step-number {
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-weight: bold;
+        }
+
+        /* Documents Section */
+        #documents {
+            padding: var(--section-padding);
+            background-color: var(--secondary-color);
+        }
+
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .embed-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            background: #fff;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+        }
+
+        .embed-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .doc-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        /* Team Section */
+        #team {
+            padding: var(--section-padding);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .team-member h4 {
+            margin-bottom: 5px;
+            color: var(--text-dark);
+        }
+
+        .team-role {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .supervisors {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        /* Tech Stack */
+        #tech-stack {
+            padding: 40px 20px;
+            background-color: var(--bg-light);
+            text-align: center;
+        }
+
+        .tech-badges {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .badge {
+            background: var(--white);
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        footer .contact-info {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        footer a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            #hero h1 {
+                font-size: 2rem;
+            }
+
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            /* Hidenav for simplicity on mobile in this version */
+            .methodology-steps {
+                flex-direction: column;
+            }
+
+            .step::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo">ATCS</div>
+            <div class="nav-links">
+                <a href="#overview">Overview</a>
+                <a href="#features">Features</a>
+                <a href="#methodology">Methodology</a>
+                <a href="#documents">Documents</a>
+                <a href="#team">Team</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container">
+            <h1>Active Tremor Compensation Spoon (ATCS)</h1>
+            <h2>An Arduino-based assistive device for Parkinson’s patients</h2>
+            <p class="tagline">“Real-time tremor stabilization using IMU and servo control”</p>
+            <div class="hero-buttons">
+                <a href="#documents" class="btn btn-primary">View Project Report</a>
+                <a href="#documents" class="btn btn-outline">View Presentation</a>
+                <a href="ATCS synopsis.pdf" class="btn btn-outline" download>Download Synopsis</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Overview -->
+    <section id="overview">
+        <div class="container">
+            <h2 class="section-title">Project Overview</h2>
+            <div class="overview-grid">
+                <div class="overview-text">
+                    <h3>The Problem</h3>
+                    <p>Parkinson’s disease causes involuntary tremors, making daily activities like eating difficult and
+                        messy, leading to frustration and loss of independence.</p>
+
+                    <h3>Our Solution</h3>
+                    <p>We developed a low-cost self-stabilizing spoon that compensates for hand tremors in real-time. By
+                        utilizing an MPU6050 sensor and precise servo control, the spoon maintains a steady level
+                        position.</p>
+
+                    <ul>
+                        <li><strong>Core Concept:</strong> PID-based active stabilization.</li>
+                        <li><strong>Hardware:</strong> Arduino Nano, MPU6050, MG90 Servos.</li>
+                        <li><strong>Goal:</strong> Affordable assistive technology.</li>
+                    </ul>
+                </div>
+                <div class="overview-image">
+                    <img src="project_spoon.jpg" alt="Active Tremor Compensation Spoon Prototype"
+                        style="width: 100%; height: auto; border-radius: var(--border-radius); box-shadow: var(--card-shadow);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features">
+        <div class="container">
+            <h2 class="section-title">Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Tremor Detection</h3>
+                    <p>Real-time sensing of hand movements and tremors using a 6-axis Gyroscope & Accelerometer.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h3>Active Stabilization</h3>
+                    <p>Uses PID feedback control to instruct servos to counteract unwanted motion instantly.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤲</div>
+                    <h3>Ergonomic Design</h3>
+                    <p>Lightweight and comfortable handle designed specifically for ease of use.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3>Open Source</h3>
+                    <p>Built on affordable, accessible hardware making it a cost-effective solution.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodology Section -->
+    <section id="methodology">
+        <div class="container">
+            <h2 class="section-title">Methodology</h2>
+            <img src="block_diagram.jpg" alt="ATCS Methodology Block Diagram"
+                style="width: 70%; height: auto; border-radius: var(--border-radius); box-shadow: var(--card-shadow); margin-bottom: 40px;">
+            <div class="methodology-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h4>Data Acquisition</h4>
+                    <p>Read raw data from MPU6050 IMU sensor.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h4>Signal Filtering</h4>
+                    <p>Apply Kalman/Complementary filter to reduce noise.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h4>PID Computation</h4>
+                    <p>Calculate error and determine corrective angle.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h4>Actuation</h4>
+                    <p>Drive servos to stabilize the spoon bowl.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Documents & Resources -->
+    <section id="documents">
+        <div class="container">
+            <h2 class="section-title">Documents & Resources</h2>
+
+            <div class="doc-links">
+                <a href="ATCS synopsis.pdf" class="btn btn-primary" target="_blank">📄 Read Synopsis Report</a>
+                <a href="#" class="btn btn-primary">📘 Final Research Report</a>
+            </div>
+
+            <div class="doc-layout">
+                <div>
+                    <h3 style="text-align: center; margin-bottom: 20px;">Project Presentation</h3>
+                    <!-- Canva Embed Placeholder -->
+                    <div class="embed-container">
+                        <!-- Paste your Canva Embed Code below inside the iframe src or replace the iframe entirely -->
+                        <iframe loading="lazy"
+                            src="https://www.canva.com/design/DAHAugtbsyE/a7B7Cc7AMaP-5bvESgc6Pg/view?embed"
+                            allowfullscreen="allowfullscreen" allow="fullscreen">
+                        </iframe>
+                        <div
+                            style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); color:#666; text-align:center; pointer-events:none;">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team">
+        <div class="container">
+            <h2 class="section-title">Meet the Team</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <!-- Placeholder for profile image -->
+                    <img src="Aaditay.jpeg" alt="Aaditay"
+                        style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px; display: block;">
+                    <h4>Aaditay</h4>
+                    <span class="team-role">Team Member</span>
+                </div>
+                <div class="team-member">
+                    <img src="Anuj .jpeg" alt="Anuj"
+                        style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px; display: block;">
+                    <h4>Anuj</h4>
+                    <span class="team-role">Team Member</span>
+                </div>
+                <div class="team-member">
+                    <img src="Ashish.jpeg" alt="Ashish"
+                        style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px; display: block;">
+                    <h4>Ashish</h4>
+                    <span class="team-role">Team Member</span>
+                </div>
+                <div class="team-member">
+                    <img src="Hemant.jpeg" alt="Hemant"
+                        style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px; display: block;">
+                    <h4>Hemant</h4>
+                    <span class="team-role">Team Member</span>
+                </div>
+            </div>
+
+            <div class="supervisors">
+                <h3>Project Supervisors</h3>
+                <div class="team-grid" style="justify-content: center;">
+                    <div class="team-member">
+                        <img src="Rita_devi.jpg" alt="Ms. Rita Devi"
+                            style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px; display: block;">
+                        <h4>Ms. Rita Devi</h4>
+                        <span class="team-role">Project Supervisor</span>
+                    </div>
+                    <div class="team-member">
+                        <img src="Pooja_sharma.png" alt="Ms. Pooja Sharma"
+                            style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px; display: block;">
+                        <h4>Ms. Pooja Sharma</h4>
+                        <span class="team-role">Project Supervisor</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Stack -->
+    <section id="tech-stack">
+        <div class="container">
+            <h3>Powered By</h3>
+            <div class="tech-badges">
+                <div class="badge">Arduino Nano</div>
+                <div class="badge">MPU6050 IMU</div>
+                <div class="badge">MG90 Servo</div>
+                <div class="badge">Embedded C</div>
+                <div class="badge">PID Control algorithm</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <h4>Department of ECE</h4>
+            <p>J N Government Engineering College, Sundernagar</p>
+            <p>Year 2026</p>
+
+            <div class="contact-info">
+                <p>Email: worklab008@.com</p>
+                <p><a href="https://github.com/ExTc-aShiSh">View on GitHub</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple Interaction Script
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("ATCS Website Loaded");
+
+            // Smooth scrolling for anchor links (fallback for older browsers)
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
