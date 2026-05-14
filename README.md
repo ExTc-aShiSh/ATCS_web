@@ -18,7 +18,7 @@ Parkinson’s disease causes involuntary tremors, making daily activities like e
 ## 🛠️ Technology Stack
 *   **Microcontroller:** Arduino Nano
 *   **Sensor:** MPU6050 IMU (Gyroscope & Accelerometer)
-*   **Actuator:** MG90 Servo Motors
+*   **Actuator:**  Servo Motors
 *   **Programming Language:** Embedded C
 *   **Algorithm:** PID Control Algorithm
 
@@ -40,9 +40,9 @@ Parkinson’s disease causes involuntary tremors, making daily activities like e
 
 ## 🎓 Institution
 **Department of ECE**
-J N Government Engineering College, Sundernagar
+Jawaharlal Nehru Government Engineering College, Sundernagar
 Year: 2026
 
 ## 📬 Contact
-*   **Email:** worklab008@gmail.com
-*   **GitHub:** [View on GitHub](https://github.com/ExTc-aShiSh)
+*   **Email:** ashishkumar9104687@gmail.com
+
